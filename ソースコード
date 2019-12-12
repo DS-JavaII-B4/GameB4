@@ -1,18 +1,66 @@
+
+class Life{
+	int life;//体力
+	final static int maxLife=1000;//上限値と下限値の設定（数値は適当）
+	final static int minLife=0;
+	final static int defaultLife=100;
+	//コンストラクタ(引数なし）
+	Life(){
+		life = defaultLife;
+	}
+	//コンストラクタ（引数あり）
+	Life(int life)throws Exception {
+		if(minLife<life||life<maxLife) {
+			throw new Exception();
+		}
+		this.life=life;
+	}
+}
+class Power{
+	int power;//攻撃力
+	final static int maxPower=500;
+	final static int minPower=0;
+	final static int defaultPower=100;
+	//コンストラクタ（引数なし）
+	Power(){
+		power=defaultPower;
+	}
+	//コンストラクタ（引数あり）
+	Power(int power)throws Exception{
+		if(minPower<power||power<maxPower){
+			throw new Exception();
+		}
+		this.power=power;
+		
+	}
+}
+class Speed{
+	int speed;//素早さ
+	final static int maxSpeed=500;
+	final static int minSpeed=0;
+}
+class Toughness{
+	int toughness;//防御力
+	final static int maxToghness=500;
+	final static int minToughness=0;
+}
 class Monster{
 	final static int POINT=100;//能力に割り当てられるポイント
-	
+	Life lifePoint;
+	Power powerPoint;
+	Speed speedPoint;
+	Toughness toughnessPoint;
 	String name;//名前
 	String type;//属性
-	int life;//体力
-	int power;//攻撃力
-	int speed;//素早さ
-	int toughness;//防御力
+	final static String[] TYPE= {"ほのお","みず","くさ","ノーマル"};//4つの属性
+	final static String DEAFAULT_TIPE = "ノーマル";
 	
-	void SetData(int life, int power, int speed, int toughness) {
-		this.life = life;
-		this.power = power;
-		this.speed = speed;
-		this.toughness = toughness;
+
+	Monster(int life, int power, int speed, int toughness) {
+		this.lifePoint = new Life(life);
+		this.powerPoint = new Power(power);
+		this.speedPoint = speed;
+		this.toughnessPoint = toughness;
 	}
 }
 /*自分のモンスター*/
