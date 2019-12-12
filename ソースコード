@@ -1,0 +1,30 @@
+class Monster{
+	final static int POINT=100;//能力に割り当てられるポイント
+	
+	String name;//名前
+	String type;//属性
+	int life;//体力
+	int power;//攻撃力
+	int speed;//素早さ
+	int toughness;//防御力
+	
+	void SetData(int life, int power, int speed, int toughness) {
+		this.life = life;
+		this.power = power;
+		this.speed = speed;
+		this.toughness = toughness;
+	}
+}
+/*自分のモンスター*/
+class Character extends Monster{
+	
+}
+/*敵のモンスター*/
+class Enemy extends Monster{
+	
+}
+public class MonsterBattle {
+	public static void main (String[] args) {
+		
+	}
+}
