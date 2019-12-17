@@ -94,7 +94,10 @@ class Character extends Monster{
 }
 /*敵のモンスター*/
 class Enemy extends Monster{
-
+	Enemy(){
+		super(100,100,100,100)
+		name="enemy";
+		type="ノーマル";
 }
 public class MonsterBattle {
 	public static void main (String[] args) {
