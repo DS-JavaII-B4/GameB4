@@ -65,26 +65,34 @@ class Toughness{
 	}
 }
 class Monster{
-	final static int POINT=100;//能力に割り当てられるポイント
-	Life lifePoint;
-	Power powerPoint;
-	Speed speedPoint;
-	Toughness toughnessPoint;
-	String name;//名前
-	String type;//属性
-	final static String[] TYPE= {"ほのお","みず","くさ","ノーマル"};//4つの属性
-	final static String DEAFAULT_TIPE = "ノーマル";
-	
+	final static int UPPER_LIMIT=1000;//能力の上限
+	final static int LOWER_LIMIT=0;//能力の下限
+	int life, power, speed, toughness;//各能力
 
 	Monster(int life, int power, int speed, int toughness) {
-		this.lifePoint = new Life(life);
-		this.powerPoint = new Power(power);
-		this.speedPoint = new Speed(speed);
-		this.toughnessPoint = new Toughness(toughness);
+		SetAbility(life, power, speed, toughness);
+	}
+	
+	void SetAbility(int life,int power,int speed,int toughness){
+		if((UPPER_LIMIT<life||life<LOWER_LIMIT)||(UPPER_LIMIT<power||LOWER_LIMIT>power)
+			||(UPPER_LIMIT<speed||LOWER_LIMIT>speed)||(UPPER_LIMIT<toughness||LOWER_LIMIT>toughness)) {
+			throw new Exception();
+			} 
+		this.life = life;
+		this.power=power;
+		this.speed=speed;
+		this.toughness=toughness;
+		}
 	}
 }
 /*自分のモンスター*/
 class Character extends Monster{
+	String name;//名前
+	String type;//属性
+	String[] skill = new String[4];//技
+	double[] skillPoint = new double[2];//攻撃力にかかる倍率
+	final static String[] TYPE= {"ほのお","みず","くさ","ノーマル"};//4つの属性
+	final static String DEAFAULT_TIPE = "ノーマル";
 	Character(String name, String type, int life, int power, int speed, int toughness){
 		super(life, power, speed, toughness);
 		this.name=name;
@@ -98,19 +106,38 @@ class Enemy extends Monster{
 		super(100,100,100,100)
 		name="enemy";
 		type="ノーマル";
+		}
 	}
 }
 class Attack{
-	void Lifeattack(Character m1,Character m2,int n) {
-		if((m1.type == "ほのお") && (m2.type == "くさ") || (m1.type == "くさ") && (m2.type == "みず")　
-				|| (m1.type == "みず") && (m2.type == "ほのお")) {
-			m2.lifePoint.life = m2.lifePoint.life - (int)((double)(m1.powerPoint.power)*m1.skillPoint[n])*2;
-		} else if((m1.type == "くさ") && (m2.type == "ほのお") || (m1.type == "みず") && (m2.type == "くさ")　
-				|| (m1.type == "ほのお") && (m2.type == "みず")){
-			m2.lifePoint.life = m2.lifePoint.life - (int)((double)(m1.powerPoint.power)*m1.skillPoint[n])/2;	
+	void LifeAttack(Character m1,Character m2,int n) {
+		if(((m1.type == "ほのお") && (m2.type == "くさ")) || ((m1.type == "くさ") && (m2.type == "みず"))　
+				|| ((m1.type == "みず") && (m2.type == "ほのお"))) {
+			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
+		} else if(((m1.type == "くさ") && (m2.type == "ほのお")) || ((m1.type == "みず") && (m2.type == "くさ"))　
+				|| ((m1.type == "ほのお") && (m2.type == "みず"))){
+			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])/2;	
 		} else {
-			m2.lifePoint.life = m2.lifePoint.life - (int)((double)(m1.powerPoint.power)*m1.skillPoint[n]);	
+			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n]);	
 		} 
+	}
+	void AbilityUp(Character m1, int n){
+		if(n = 0){
+		m1.power = m1.power + 5;
+		} else if(n = 1){
+		m1.speed = m1.speed +5;
+		} else if(n = 2){
+		m1.toughness = m1.toughness + 5;
+		}
+	}
+	void AbilityDown(){
+		if(n = 0){
+			m1.power = m1.power - 5;
+		} else if(n = 1){
+			m1.speed = m1.speed - 5;
+		} else if(n = 2){
+			m1.toughness = m1.toughness - 5;
+		}
 	}
 	
 	
