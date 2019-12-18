@@ -104,9 +104,16 @@ class Attack{
 	void Lifeattack(Character m1,Character m2,int n) {
 		if((m1.type == "ほのお") && (m2.type == "くさ") || (m1.type == "くさ") && (m2.type == "みず")　
 				|| (m1.type == "みず") && (m2.type == "ほのお")) {
-			m2.lifePoint.life = m2.lifePoint.life - (int)((double)(m1.powerPoint.power)*m1.skillPoint[n]);
-		}
+			m2.lifePoint.life = m2.lifePoint.life - (int)((double)(m1.powerPoint.power)*m1.skillPoint[n])*2;
+		} else if((m1.type == "くさ") && (m2.type == "ほのお") || (m1.type == "みず") && (m2.type == "くさ")　
+				|| (m1.type == "ほのお") && (m2.type == "みず")){
+			m2.lifePoint.life = m2.lifePoint.life - (int)((double)(m1.powerPoint.power)*m1.skillPoint[n])/2;	
+		} else {
+			m2.lifePoint.life = m2.lifePoint.life - (int)((double)(m1.powerPoint.power)*m1.skillPoint[n]);	
+		} 
 	}
+	
+	
 }
 public class MonsterBattle {
 	public static void main (String[] args) {
