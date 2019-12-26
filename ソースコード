@@ -44,7 +44,7 @@ class Enemy extends Monster{
 	}
 }
 class Attack{
-	void LifeAttack(Character m1,Character m2,int n) {
+	void LifeAttack(Character m1,Character m2,Character.skill[int n]) {
 		if(((m1.type == "ほのお") && (m2.type == "くさ")) || ((m1.type == "くさ") && (m2.type == "みず"))　
 				|| ((m1.type == "みず") && (m2.type == "ほのお"))) {
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
@@ -55,7 +55,7 @@ class Attack{
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n]);	
 		} 
 	}
-	void AbilityUp(Character m1, int n){
+	void AbilityUp(Character m1, Character.skill[int n]){
 		if(n = 0){
 		m1.power = m1.power + 5;
 		} else if(n = 1){
@@ -79,7 +79,7 @@ class Attack{
 public class MonsterBattle {
 	public static void main (String[] args) {
 		try {
-
+	
 		}catch(Exception e) {
 
 	}
