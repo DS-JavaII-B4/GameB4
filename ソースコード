@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 class Monster{
 	final static int UPPER_LIMIT=1000;//能力の上限
 	final static int LOWER_LIMIT=0;//能力の下限
@@ -7,7 +10,7 @@ class Monster{
 		SetAbility(life, power, speed, toughness);
 	}
 	/*各能力を設定*/
-	void SetAbility(int life,int power,int speed,int toughness)throw Excepton(){
+	void SetAbility(int life,int power,int speed,int toughness){
 		if((UPPER_LIMIT<life||life<LOWER_LIMIT)||(UPPER_LIMIT<power||LOWER_LIMIT>power)
 			||(UPPER_LIMIT<speed||LOWER_LIMIT>speed)||(UPPER_LIMIT<toughness||LOWER_LIMIT>toughness)) {
 			throw new Exception();
@@ -76,9 +79,52 @@ class Attack{
 }
 public class MonsterBattale {
 	public static void main (String[] args) {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		try {
-	
+			System.out.println("はじめにモンスターを作ってもらいます");
+			System.out.println("まず名前を入力してください");
+			
+			String name=reader.readLine();
+			System.out.println("モンスターの名前は"+name+"ですね");
+			System.out.println("次にモンスターのタイプを選んでもらいます");
+			System.out.println("ほのお、みず、くさ、ノーマルから一つ選んで入力してください");
+			
+			String type=reader.readLine();
+			System.out.println("モンスターのタイプは"+type+"ですね");
+			System.out.println("モンスターを作るのに1000ポイント最初に与えられます");
+			System.out.println("体力、パワー、スピード、防御力それぞれにポイントを割り振ってオリジナルのモンスターを作ってください");
+			System.out.println("まず体力は幾つにしますか？整数で入力してください");
+			
+			String line =reader.readLine();
+			int life=Integer.parseInt(line);
+			int point1=1000-life;
+			System.out.println("体力:"+life+"  残りポイント:"+point1);
+			System.out.println("次にパワーを決めてください。同じく整数で入力してください");
+			
+			line=reader.readLine();
+			int power=Integer.parseInt(line);
+			int point2=1000-(life+power);
+			System.out.println("体力:"+life+"パワー:"+power+"  残りポイント:"+point2);
+			System.out.println("次にスピードを決めてください。同じく整数で入力してください");
+			
+			line=reader.readLine();
+			int speed=Integer.parseInt(line);
+			int point3=1000-(life+power+speed);
+			System.out.println("体力:"+life+"パワー:"+power+"スピード:"+speed+"  残りポイント:"+point3);
+			System.out.println("次に防御力を決めてください。同じく整数で入力してください");
+			
+			line=reader.readLine();
+			int toughness=Integer.parseInt(line);
+			int point4=1000-(life+power+speed+toughness);
+			if(point4!=1000) {
+				throw new Exception();
+			}
+			System.out.println("体力:"+life+"パワー:"+power+"スピード:"+speed+"防御力:"+toughness);
+			System.out.println("このモンスターでバトルを開始します");
 		}catch(Exception e) {
+			System.out.println();
 
 	}
-}}
+	}
+}
+
