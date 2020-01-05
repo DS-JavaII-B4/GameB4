@@ -38,9 +38,8 @@ class Character extends Monster{
 }
 /*敵のモンスター*/
 class Enemy extends Monster{
-	Enemy(String name, String type, int life, int power, int speed, int toughness){
+	Enemy(String type,int life, int power, int speed, int toughness){
 		super(100,100,100,100);
-		name="enemy";
 		type="ノーマル";
 		}
 	}
@@ -122,10 +121,30 @@ public class MonsterBattale {
 			}
 			System.out.println("体力:"+life+"攻撃力:"+power+"素早さ:"+speed+"防御力:"+toughness);
 			System.out.println("このモンスターでバトルを開始します");
+			Character ch1 = new Character(name,type,life,power,speed,toughness);
+			String normal;
+			Enemy e1 = new Enemy(normal,100,100,100,100);
+			while((ch1.power>Monster.LOWER_LIMIT)&&(e1.power>Monster.LOWER_LIMIT)){
+				if(ch1.speed>e1.speed) {
+					
+				}else if(ch1.speed==e1.speed) {
+					
+				}else {
+					
+				}
+			}
+			System.out.println("バトルが終了しました。");
+			if(ch1.power>Monster.LOWER_LIMIT) {
+				System.out.println("モンスターの勝利!!");
+			}else if(e1.power>Monster.LOWER_LIMIT) {
+				System.out.println("モンスターは敗北しました....");
+			}else {
+				System.out.println("引き分けです。");
+			}
+			
 		}catch(Exception e) {
 			System.out.println();
 
 	}
 	}
 }
-
