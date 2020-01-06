@@ -5,6 +5,7 @@ class Monster{
 	final static int UPPER_LIMIT=1000;//能力の上限
 	final static int LOWER_LIMIT=0;//能力の下限
 	int life, power, speed, toughness;//各能力
+	final static String[] TYPE= {"ほのお","みず","くさ","ノーマル"};//4つの属性
 
 	Monster(int life, int power, int speed, int toughness) throws Exception {
 		SetAbility(life, power, speed, toughness);
@@ -27,7 +28,6 @@ class Character extends Monster{
 	String type;//属性
 	static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
 	double[] skillPoint = {2.0,1.2};//攻撃力にかかる倍率
-	final static String[] TYPE= {"ほのお","みず","くさ","ノーマル"};//4つの属性
 	final static String DEAFAULT_TIPE = "ノーマル";
 	Character(String name, String type, int life, int power, int speed, int toughness) throws Exception{
 		super(life, power, speed, toughness);
@@ -39,8 +39,8 @@ class Character extends Monster{
 /*敵のモンスター*/
 class Enemy extends Monster{
 	Enemy(String type,int life, int power, int speed, int toughness) throws Exception{
-		super(100,100,100,100);
-		type="ノーマル";
+		super(250,250,250,250);
+		type=TYPE[(int)(Math.random()*4)];
 		}
 	}
 
