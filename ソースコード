@@ -5,7 +5,6 @@ class Monster{
 	final static int UPPER_LIMIT=1000;//能力の上限
 	final static int LOWER_LIMIT=0;//能力の下限
 	int life, power, speed, toughness;//各能力
-	final static String[] TYPE= {"ほのお","みず","くさ","ノーマル"};//4つの属性
 
 	Monster(int life, int power, int speed, int toughness) throws Exception {
 		SetAbility(life, power, speed, toughness);
@@ -28,6 +27,7 @@ class Character extends Monster{
 	String type;//属性
 	static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
 	double[] skillPoint = {2.0,1.2};//攻撃力にかかる倍率
+	final static String[] TYPE= {"ほのお","みず","くさ","ノーマル"};//4つの属性
 	final static String DEAFAULT_TIPE = "ノーマル";
 	Character(String name, String type, int life, int power, int speed, int toughness) throws Exception{
 		super(life, power, speed, toughness);
@@ -38,14 +38,16 @@ class Character extends Monster{
 }
 /*敵のモンスター*/
 class Enemy extends Monster{
+	String type;
+	double[] skillPoint = {1.5,1.2};
 	Enemy(String type,int life, int power, int speed, int toughness) throws Exception{
-		super(250,250,250,250);
-		type=TYPE[(int)(Math.random()*4)];
+		super(100,100,100,100);
+		this.type="ノーマル";
 		}
 	}
 
-class Attack{
-	void LifeAttack(Character m1, Character m2, int n){
+class AttackC{
+	static void LifeAttack(Character m1, Enemy m2, int n){
 		if(((m1.type == "ほのお") && (m2.type == "くさ")) || ((m1.type == "くさ") && (m2.type == "みず"))|| ((m1.type == "みず") && (m2.type == "ほのお"))) {
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
 		} else if(((m1.type == "くさ") && (m2.type == "ほのお")) || ((m1.type == "みず") && (m2.type == "くさ"))|| ((m1.type == "ほのお") && (m2.type == "みず"))){
@@ -54,7 +56,7 @@ class Attack{
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n]);
 		}
 	}
-	void AbilityUp(Character m1, int n){
+	static void AbilityUp(Character m1, int n){
 		if(n==0){
 		m1.power = m1.power + 5;
 		} else if(n==1){
@@ -63,7 +65,37 @@ class Attack{
 		m1.toughness = m1.toughness + 5;
 		}
 	}
-	void AbilityDown(Character m1, int n){
+	static void AbilityDown(Enemy m1, int n){
+		if(n==0){
+			m1.power = m1.power - 5;
+		} else if(n==1){
+			m1.speed = m1.speed - 5;
+		} else if(n==2){
+			m1.toughness = m1.toughness - 5;
+		}
+	
+	}
+}
+class AttackE{
+	static void LifeAttack(Enemy m1,Character m2, int n){
+		if(((m1.type == "ほのお") && (m2.type == "くさ")) || ((m1.type == "くさ") && (m2.type == "みず"))|| ((m1.type == "みず") && (m2.type == "ほのお"))) {
+			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
+		} else if(((m1.type == "くさ") && (m2.type == "ほのお")) || ((m1.type == "みず") && (m2.type == "くさ"))|| ((m1.type == "ほのお") && (m2.type == "みず"))){
+			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])/2;
+		} else {
+			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n]);
+		}
+	}
+	static void AbilityUp(Enemy m1, int n){
+		if(n==0){
+		m1.power = m1.power + 5;
+		} else if(n==1){
+		m1.speed = m1.speed +5;
+		} else if(n==2){
+		m1.toughness = m1.toughness + 5;
+		}
+	}
+	static void AbilityDown(Character m1, int n){
 		if(n==0){
 			m1.power = m1.power - 5;
 		} else if(n==1){
@@ -130,11 +162,121 @@ public class MonsterBattale {
 			String normal = null;
 			Enemy e1 = new Enemy(normal,100,100,100,100);
 			while((ch1.power>Monster.LOWER_LIMIT)&&(e1.power>Monster.LOWER_LIMIT)){
+				System.out.println("技を選んでください");
+				for(int i=0;i<Character.skill.length;i++) {
+					System.out.println(i+":"+Character.skill[i]);
+				}System.out.println("番号で選んでください");
+				BufferedReader reader7 = new BufferedReader(new InputStreamReader(System.in));
+				String sline=reader7.readLine();
+				int skill=Integer.parseInt(sline);
 				if(ch1.speed>e1.speed) {
-
+					switch(skill) {
+					case 1:
+						AttackC.LifeAttack(ch1,e1,1);
+					case 2:
+						AttackC.LifeAttack(ch1,e1,2);
+					case 3:
+						int num =(int)(Math.random()*2);
+						AttackC.AbilityUp(ch1,num);
+					case 4:
+						int num2 =(int)(Math.random()*2);
+						AttackC.AbilityDown(e1,num2);
+					}
+					int eskill=(int)(Math.random()*3)+1;
+					switch(eskill) {
+					case 1:
+						AttackE.LifeAttack(e1,ch1,1);
+					case 2:
+						AttackE.LifeAttack(e1,ch1,2);
+					case 3:
+						int num =(int)(Math.random()*2);
+						AttackE.AbilityUp(e1,num);
+					case 4:
+						int num2 =(int)(Math.random()*2);
+						AttackE.AbilityDown(ch1,num2);
+					}
 				}else if(ch1.speed==e1.speed) {
+					int judge=(int)(Math.random());
+					if(judge==1) {
+						switch(skill) {
+						case 1:
+							AttackC.LifeAttack(ch1,e1,1);
+						case 2:
+							AttackC.LifeAttack(ch1,e1,2);
+						case 3:
+							int num =(int)(Math.random()*2);
+							AttackC.AbilityUp(ch1,num);
+						case 4:
+							int num2 =(int)(Math.random()*2);
+							AttackC.AbilityDown(e1,num2);
+						}
+						int eskill=(int)(Math.random()*3)+1;
+						switch(eskill) {
+						case 1:
+							AttackE.LifeAttack(e1,ch1,1);
+						case 2:
+							AttackE.LifeAttack(e1,ch1,2);
+						case 3:
+							int num =(int)(Math.random()*2);
+							AttackE.AbilityUp(e1,num);
+						case 4:
+							int num2 =(int)(Math.random()*2);
+							AttackE.AbilityDown(ch1,num2);
+						}
+					}else {
+						int eskill=(int)(Math.random()*3)+1;
+						switch(eskill) {
+						case 1:
+							AttackE.LifeAttack(e1,ch1,1);
+						case 2:
+							AttackE.LifeAttack(e1,ch1,2);
+						case 3:
+							int num =(int)(Math.random()*2);
+							AttackE.AbilityUp(e1,num);
+						case 4:
+							int num2 =(int)(Math.random()*2);
+							AttackE.AbilityDown(ch1,num2);
+						}
+						switch(skill) {
+						case 1:
+							AttackC.LifeAttack(ch1,e1,1);
+						case 2:
+							AttackC.LifeAttack(ch1,e1,2);
+						case 3:
+							int num =(int)(Math.random()*2);
+							AttackC.AbilityUp(ch1,num);
+						case 4:
+							int num2 =(int)(Math.random()*2);
+							AttackC.AbilityDown(e1,num2);
+						}
+					}
 
 				}else {
+					int eskill=(int)(Math.random()*3)+1;
+					switch(eskill) {
+					case 1:
+						AttackE.LifeAttack(e1,ch1,1);
+					case 2:
+						AttackE.LifeAttack(e1,ch1,2);
+					case 3:
+						int num =(int)(Math.random()*2);
+						AttackE.AbilityUp(e1,num);
+					case 4:
+						int num2 =(int)(Math.random()*2);
+						AttackE.AbilityDown(ch1,num2);
+					}
+					switch(skill) {
+					case 1:
+						AttackC.LifeAttack(ch1,e1,1);
+					case 2:
+						AttackC.LifeAttack(ch1,e1,2);
+					case 3:
+						int num =(int)(Math.random()*2);
+						AttackC.AbilityUp(ch1,num);
+					case 4:
+						int num2 =(int)(Math.random()*2);
+						AttackC.AbilityDown(e1,num2);
+					}
 
 				}
 			}
