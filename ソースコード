@@ -27,9 +27,9 @@ class Character extends Monster{
 	String name;//名前
 	String type;//属性
 	static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
-	double[] skillPoint = {2.0,1.2};//攻撃力にかかる倍率
+	double[] skillPoint = {0.3,0.1};//攻撃力にかかる倍率
 	final static String[] TYPE= {"fire","water","nature","normal"};//4つの属性
-	final static String DEAFAULT_TIPE = "ノーマル";
+	final static String DEAFAULT_TIPE = "normal";
 	Character(String name, String type, int life, int power, int speed, int toughness) throws Exception{
 		super(life, power, speed, toughness);
 		this.name=name;
@@ -41,20 +41,24 @@ class Character extends Monster{
 class Enemy extends Monster{
 	String type;
 	static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
-	double[] skillPoint = {1.5,1.2};
-	Enemy(String type,int life, int power, int speed, int toughness) throws Exception{
+	double[] skillPoint = {0.3,0.1};
+	Enemy(int life, int power, int speed, int toughness) throws Exception{
  		super(250,250,250,250);
- 		type=TYPE[(int)(Math.random()*4)];
+ 		type="water"/*YPE[1]*/;
 		}
 	}
 
 class AttackC{
 	static void LifeAttack(Character m1, Enemy m2, int n){
 		System.out.println(m1.name+"は敵に攻撃した");
-		if(((m1.type == "fire") && (m2.type == "nature")) || ((m1.type == "nature") && (m2.type == "water"))|| ((m1.type == "water") && (m2.type == "fire"))) {
+		if(((m1.type == "fire") && (m2.type == "nature")) 
+				|| ((m1.type == "nature") && (m2.type == "water"))
+				|| ((m1.type == "water") && (m2.type == "fire"))) {
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
 			System.out.println("効果はバツグンだ!");
-		} else if(((m1.type == "nature") && (m2.type == "fire")) || ((m1.type == "water") && (m2.type == "nature"))|| ((m1.type == "fire") && (m2.type == "water"))){
+		} else if(((m1.type == "nature") && (m2.type == "fire")) 
+				|| ((m1.type == "water") && (m2.type == "nature"))
+				|| ((m1.type == "fire") && (m2.type == "water"))){
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])/2;
 			System.out.println("効果はいまひとつだ。");
 		} else {
@@ -90,10 +94,14 @@ class AttackC{
 class AttackE{
 	static void LifeAttack(Enemy m1,Character m2, int n){
 		System.out.println("敵は"+m2.name+"に攻撃した");
-		if(((m1.type == "fire") && (m2.type == "nature")) || ((m1.type == "nature") && (m2.type == "water"))|| ((m1.type == "water") && (m2.type == "fire"))) {
+		if(((m1.type == "fire") && (m2.type == "nature")) 
+				|| ((m1.type == "nature") && (m2.type == "water"))
+				|| ((m1.type == "water") && (m2.type == "fire"))) {
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
 			System.out.println("効果はバツグンだ!");
-		} else if(((m1.type == "nature") && (m2.type == "fire")) || ((m1.type == "water") && (m2.type == "nature"))|| ((m1.type == "fire") && (m2.type == "water"))){
+		} else if(((m1.type == "nature") && (m2.type == "fire")) 
+				|| ((m1.type == "water") && (m2.type == "nature"))
+				|| ((m1.type == "fire") && (m2.type == "water"))){
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])/2;
 			System.out.println("効果はいまひとつだ。");
 		} else {
@@ -128,7 +136,7 @@ class AttackE{
 	}
 }
 
-public class MonsterBattale {
+public class MonsterBattle {
 	public static void main (String[] args) {
 		try {
 			System.out.println("はじめにモンスターを作ってもらいます");
@@ -165,7 +173,9 @@ public class MonsterBattale {
 			BufferedReader reader6 = new BufferedReader(new InputStreamReader(System.in));
 			String line4=reader6.readLine();
 			int toughness=Integer.parseInt(line4);
-			System.out.println("体力:"+life+"攻撃力:"+power+"素早さ:"+speed+"防御力:"+toughness);
+			Character ch1 = new Character(name,"fire",life,power,speed,toughness);
+			System.out.println("タイプ:"+ch1.type+"体力:"+ch1.life+"攻撃力:"+ch1.power+
+					"素早さ:"+ch1.speed+"防御力:"+ch1.toughness);
 			System.out.println("モンスターは四つの技を持ちます");
 			System.out.println("四つの技を一つずつ選んでモンスターと戦います");
 			System.out.print("モンスターが持つ技は ");
@@ -174,10 +184,12 @@ public class MonsterBattale {
 			}System.out.println("です");
 			System.out.println("このモンスターでバトルを開始します");
 			System.out.println();
-			Character ch1 = new Character(name,type,life,power,speed,toughness);
-			String normal = null;
-			Enemy e1 = new Enemy(normal,100,100,100,100);
-			while((ch1.power>Monster.LOWER_LIMIT)&&(e1.power>Monster.LOWER_LIMIT)){
+			
+			Enemy e1 = new Enemy(250,250,250,250);
+			System.out.println("敵のステータスは以下の通りです");
+			System.out.println("タイプ:"+e1.type+"体力:"+e1.life+"攻撃力:"+e1.power+
+					"素早さ:"+e1.speed+"防御力:"+e1.toughness);
+			while((ch1.life>Monster.LOWER_LIMIT)&&(e1.life>Monster.LOWER_LIMIT)){
 				System.out.println("技を選んでください");
 				for(int i=0;i<Character.skill.length;i++) {
 					System.out.println(i+":"+Character.skill[i]);
@@ -188,30 +200,38 @@ public class MonsterBattale {
 				if(ch1.speed>e1.speed) {
 					System.out.println(ch1.name+"は"+Character.skill[skill]+"を使った！");
 					switch(skill) {
+					case 0:
+						AttackC.LifeAttack(ch1,e1,0);
+						break;
 					case 1:
 						AttackC.LifeAttack(ch1,e1,1);
+						break;
 					case 2:
-						AttackC.LifeAttack(ch1,e1,2);
-					case 3:
 						int num =(int)(Math.random()*2);
 						AttackC.AbilityUp(ch1,num);
-					case 4:
+						break;
+					case 3:
 						int num2 =(int)(Math.random()*2);
 						AttackC.AbilityDown(e1,num2);
+						break;
 					}
-					int eskill=(int)(Math.random()*3)+1;
+					int eskill=(int)(Math.random()*4);
 					System.out.println("敵は"+Enemy.skill[eskill]+"を使った！");
 					switch(eskill) {
+					case 0:
+						AttackE.LifeAttack(e1,ch1,0);
+						break;
 					case 1:
 						AttackE.LifeAttack(e1,ch1,1);
+						break;
 					case 2:
-						AttackE.LifeAttack(e1,ch1,2);
-					case 3:
 						int num =(int)(Math.random()*2);
 						AttackE.AbilityUp(e1,num);
-					case 4:
+						break;
+					case 3:
 						int num2 =(int)(Math.random()*2);
 						AttackE.AbilityDown(ch1,num2);
+						break;
 					}
 					
 				}else if(ch1.speed==e1.speed) {
@@ -219,95 +239,127 @@ public class MonsterBattale {
 					if(judge==1) {
 						System.out.print(ch1.name+"は"+Character.skill[skill]+"を使った！");
 						switch(skill) {
+						case 0:
+							AttackC.LifeAttack(ch1,e1,0);
+							break;
 						case 1:
 							AttackC.LifeAttack(ch1,e1,1);
+							break;
 						case 2:
-							AttackC.LifeAttack(ch1,e1,2);
-						case 3:
 							int num =(int)(Math.random()*2);
 							AttackC.AbilityUp(ch1,num);
-						case 4:
+							break;
+						case 3:
 							int num2 =(int)(Math.random()*2);
 							AttackC.AbilityDown(e1,num2);
+							break;
 						}
-						int eskill=(int)(Math.random()*3)+1;
+						int eskill=(int)(Math.random()*4);
 						System.out.print("敵は"+Enemy.skill[eskill]+"を使った！");
 						switch(eskill) {
+						case 0:
+							AttackE.LifeAttack(e1,ch1,0);
+							break;
 						case 1:
 							AttackE.LifeAttack(e1,ch1,1);
+							break;
 						case 2:
-							AttackE.LifeAttack(e1,ch1,2);
-						case 3:
 							int num =(int)(Math.random()*2);
 							AttackE.AbilityUp(e1,num);
-						case 4:
+							break;
+						case 3:
 							int num2 =(int)(Math.random()*2);
 							AttackE.AbilityDown(ch1,num2);
+							break;
 						}
 						
 					}else {
-						int eskill=(int)(Math.random()*3)+1;
+						int eskill=(int)(Math.random()*4);
 						System.out.print("敵は"+Enemy.skill[eskill]+"を使った！");
 						switch(eskill) {
+						case 0:
+							AttackE.LifeAttack(e1,ch1,0);
+							break;
 						case 1:
 							AttackE.LifeAttack(e1,ch1,1);
+							break;
 						case 2:
-							AttackE.LifeAttack(e1,ch1,2);
-						case 3:
 							int num =(int)(Math.random()*2);
 							AttackE.AbilityUp(e1,num);
-						case 4:
+							break;
+						case 3:
 							int num2 =(int)(Math.random()*2);
 							AttackE.AbilityDown(ch1,num2);
+							break;
 						}
 						System.out.print(ch1.name+"は"+Character.skill[skill]+"を使った！");
 						switch(skill) {
+						case 0:
+							AttackC.LifeAttack(ch1,e1,0);
+							break;
 						case 1:
 							AttackC.LifeAttack(ch1,e1,1);
+							break;
 						case 2:
-							AttackC.LifeAttack(ch1,e1,2);
-						case 3:
 							int num =(int)(Math.random()*2);
 							AttackC.AbilityUp(ch1,num);
-						case 4:
+							break;
+						case 3:
 							int num2 =(int)(Math.random()*2);
 							AttackC.AbilityDown(e1,num2);
+							break;
 						}
 					}
 					
 
 				}else {
-					int eskill=(int)(Math.random()*3)+1;
+					int eskill=(int)(Math.random()*4);
 					System.out.print("敵は"+Enemy.skill[eskill]+"を使った！");
 					switch(eskill) {
+					case 0:
+						AttackE.LifeAttack(e1,ch1,0);
+						break;
 					case 1:
 						AttackE.LifeAttack(e1,ch1,1);
+						break;
 					case 2:
-						AttackE.LifeAttack(e1,ch1,2);
-					case 3:
 						int num =(int)(Math.random()*2);
 						AttackE.AbilityUp(e1,num);
-					case 4:
+						break;
+					case 3:
 						int num2 =(int)(Math.random()*2);
 						AttackE.AbilityDown(ch1,num2);
+						break;
 					}
 					System.out.print(ch1.name+"は"+Character.skill[skill]+"を使った！");
 					switch(skill) {
+					case 0:
+						AttackC.LifeAttack(ch1,e1,0);
+						break;
 					case 1:
 						AttackC.LifeAttack(ch1,e1,1);
+						break;
 					case 2:
-						AttackC.LifeAttack(ch1,e1,2);
-					case 3:
 						int num =(int)(Math.random()*2);
 						AttackC.AbilityUp(ch1,num);
-					case 4:
+						break;
+					case 3:
 						int num2 =(int)(Math.random()*2);
 						AttackC.AbilityDown(e1,num2);
+						break;
 					}
 					
 				}
-				//System.out.println(ch1.name+"の残り体力:"+ch1.life);
-				//System.out.println("敵の残り体力:"+e1.life);
+				if((ch1.life>0)&&(e1.life>0)) {
+				System.out.println(ch1.name+"の残り体力:"+ch1.life);
+				System.out.println("敵の残り体力:"+e1.life);
+				}else if(ch1.life<0){
+					System.out.println(ch1.name+"の残り体力:0");
+					System.out.println("敵の残り体力:"+e1.life);
+				}else if(e1.life<0) {
+					System.out.println(ch1.name+"の残り体力:"+ch1.life);
+					System.out.println("敵の残り体力:0");
+				}
 			}
 			System.out.println("バトルが終了しました。");
 			if(ch1.power>Monster.LOWER_LIMIT) {
@@ -319,7 +371,7 @@ public class MonsterBattale {
 			}
 
 		}catch(Exception e) {
-			System.out.println();
+			System.out.println("エラーが発生しました");
 
 	}
 	}
