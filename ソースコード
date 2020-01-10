@@ -17,8 +17,8 @@ class Monster{
 			throw new Exception();
 			}
 		this.life = life;
-		this.power=power;
-		this.speed=speed;
+		this.power= power;
+		this.speed= speed;
 		this.toughness=toughness;
 		}
 	}
@@ -28,7 +28,6 @@ class Character extends Monster{
 	String type;//属性
 	static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
 	double[] skillPoint = {0.3,0.1};//攻撃力にかかる倍率
-	final static String[] TYPE= {"fire","water","nature","normal"};//4つの属性
 	final static String DEAFAULT_TIPE = "normal";
 	Character(String name, String type, int life, int power, int speed, int toughness) throws Exception{
 		super(life, power, speed, toughness);
@@ -44,8 +43,22 @@ class Enemy extends Monster{
 	double[] skillPoint = {0.3,0.1};
 	Enemy(int life, int power, int speed, int toughness) throws Exception{
  		super(250,250,250,250);
- 		type="water"/*YPE[1]*/;
-		}
+ 		int n = (int)(Math.random()*4);
+ 		switch(n){
+ 		case 0:
+ 			type = TYPE[0];
+ 			break;
+ 		case 1:
+ 			type = TYPE[1];
+ 			break;
+ 		case 2:
+ 			type = TYPE[2];
+ 			break;
+ 		case 3:
+ 			type = TYPE[3];
+ 			break;
+ 		}
+ 		}
 	}
 
 class AttackC{
@@ -56,36 +69,47 @@ class AttackC{
 				|| ((m1.type == "water") && (m2.type == "fire"))) {
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
 			System.out.println("効果はバツグンだ!");
-		} else if(((m1.type == "nature") && (m2.type == "fire")) 
+			System.out.println("敵に"+(int)((double)(m1.power)*m1.skillPoint[n])*2+
+					"ptのダメージを与えた！");
+		} else if(((m1.type == "fire") && (m2.type == "water")) 
 				|| ((m1.type == "water") && (m2.type == "nature"))
-				|| ((m1.type == "fire") && (m2.type == "water"))){
+				|| ((m1.type == "nature") && (m2.type == "fire"))){
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])/2;
 			System.out.println("効果はいまひとつだ。");
-		} else {
+			System.out.println("敵に"+(int)((double)(m1.power)*m1.skillPoint[n])/2+
+					"ptのダメージを与えた！");
+		} else if((m1.type == Monster.TYPE[3])||(m2.type == Monster.TYPE[3])||(m1.type == m2.type)) {
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n]);
+			System.out.println("敵に"+(int)((double)(m1.power)*m1.skillPoint[n])+
+					"ptのダメージを与えた！");
+		}
+		if(n == 0) {
+			m1.life = m1.life - (int)((double)(m1.power)*0.05);
+			System.out.println(m1.name+"は反動で"+(int)((double)(m1.power)*m1.skillPoint[n])+
+					"ptのダメージを受けた！");
 		}
 	}
 	static void AbilityUp(Character m1, int n){
 		if(n==0){
-		m1.power = m1.power + 5;
+		m1.power = m1.power + 20;
 		System.out.println(m1.name+"のパワーが上昇した！");
 		} else if(n==1){
-		m1.speed = m1.speed +5;
+		m1.speed = m1.speed +20;
 		System.out.println(m1.name+"のスピードが上昇した！");
 		} else if(n==2){
-		m1.toughness = m1.toughness + 5;
+		m1.toughness = m1.toughness + 20;
 		System.out.println(m1.name+"の防御力が上昇した！");
 		}
 	}
 	static void AbilityDown(Enemy m1, int n){
 		if(n==0){
-			m1.power = m1.power - 5;
+			m1.power = m1.power - 20;
 			System.out.println("敵のパワーがダウンした");
 		} else if(n==1){
-			m1.speed = m1.speed - 5;
+			m1.speed = m1.speed - 20;
 			System.out.println("敵のスピードがダウンした");
 		} else if(n==2){
-			m1.toughness = m1.toughness - 5;
+			m1.toughness = m1.toughness - 20;
 			System.out.println("敵の防御力がダウンした");
 		}
 
@@ -98,38 +122,48 @@ class AttackE{
 				|| ((m1.type == "nature") && (m2.type == "water"))
 				|| ((m1.type == "water") && (m2.type == "fire"))) {
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])*2;
+			System.out.println(m2.name+"は"+(int)((double)(m1.power)*m1.skillPoint[n])*2+
+					"ptのダメージを受けた！");
 			System.out.println("効果はバツグンだ!");
-		} else if(((m1.type == "nature") && (m2.type == "fire")) 
+		} else if(((m1.type == "fire") && (m2.type == "water")) 
 				|| ((m1.type == "water") && (m2.type == "nature"))
-				|| ((m1.type == "fire") && (m2.type == "water"))){
+				|| ((m1.type == "nature") && (m2.type == "fire"))){
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n])/2;
 			System.out.println("効果はいまひとつだ。");
-		} else {
+			System.out.println(m2.name+"は"+(int)((double)(m1.power)*m1.skillPoint[n])/2+
+					"ptのダメージを受けた！");
+		} else if((m1.type == "normal")||(m2.type == "normal")||(m1.type == m2.type)){
 			m2.life = m2.life - (int)((double)(m1.power)*m1.skillPoint[n]);
+			System.out.println(m2.name+"は"+(int)((double)(m1.power)*m1.skillPoint[n])+
+					"ptのダメージを受けた！");
+		}
+		if(n == 0) {
+			m1.life = m1.life - (int)((double)(m1.power)*0.05);
+			System.out.println("敵は反動で"+(int)((double)(m1.power)*0.05)+"ptのダメージを受けた！");
 		}
 	}
 
 	static void AbilityUp(Enemy m1, int n){
 		if(n==0){
-			m1.power = m1.power + 5;
+			m1.power = m1.power + 20;
 			System.out.println("敵のパワーが上昇した！");
 			} else if(n==1){
-			m1.speed = m1.speed +5;
+			m1.speed = m1.speed +20;
 			System.out.println("敵のスピードが上昇した！");
 			} else if(n==2){
-			m1.toughness = m1.toughness + 5;
+			m1.toughness = m1.toughness + 20;
 			System.out.println("敵の防御力が上昇した！");
 			}
 		}
 	static void AbilityDown(Character m1, int n){
 		if(n==0){
-			m1.power = m1.power - 5;
+			m1.power = m1.power - 20;
 			System.out.println(m1.name+"のパワーがダウンした");
 		} else if(n==1){
-			m1.speed = m1.speed - 5;
+			m1.speed = m1.speed - 20;
 			System.out.println(m1.name+"のスピードがダウンした");
 		} else if(n==2){
-			m1.toughness = m1.toughness - 5;
+			m1.toughness = m1.toughness - 20;
 			System.out.println(m1.name+"の防御力がダウンした");
 		}
 
@@ -145,43 +179,49 @@ public class MonsterBattle {
 			String name=reader1.readLine();
 			System.out.println("モンスターの名前は"+name+"ですね");
 			System.out.println("次にモンスターのタイプを選んでもらいます");
-			System.out.println("fire,water,nature,normalから一つ選んで入力してください");
+			System.out.println("[0]fire,[1]water,[2]nature,[3]normalから一つ数字で選んで入力してください");
 			BufferedReader reader2 = new BufferedReader(new InputStreamReader(System.in));
-			String type=reader2.readLine();
+			int n = Integer.parseInt(reader2.readLine());
+			String type = Character.TYPE[n];
+			
+			
+			
 			System.out.println("モンスターのタイプは"+type+"ですね");
-			System.out.println("モンスターを作るのに1000ポイント最初に与えられます");
+			System.out.println("モンスターを作るのに1000pt最初に与えられます");
 			System.out.println("体力、攻撃力、素早さ、防御力それぞれにポイントを割り振ってオリジナルのモンスターを作ってください");
 			System.out.println("まず体力は幾つにしますか？整数で入力してください");
 			BufferedReader reader3 = new BufferedReader(new InputStreamReader(System.in));
 			String line1 =reader3.readLine();
 			int life=Integer.parseInt(line1);
 			int point1=1000-life;
-			System.out.println("体力:"+life+"  残りポイント:"+point1);
+			System.out.println("体力:"+life+"  残りpt:"+point1);
 			System.out.println("次に攻撃力を決めてください。同じく整数で入力してください");
 			BufferedReader reader4 = new BufferedReader(new InputStreamReader(System.in));
 			String line2=reader4.readLine();
 			int power=Integer.parseInt(line2);
 			int point2=1000-(life+power);
-			System.out.println("体力:"+life+"攻撃力:"+power+"  残りポイント:"+point2);
+			System.out.println("体力:"+life+"攻撃力:"+power+"  残りpt:"+point2);
 			System.out.println("次に素早さを決めてください。同じく整数で入力してください");
 			BufferedReader reader5 = new BufferedReader(new InputStreamReader(System.in));
 			String line3=reader5.readLine();
 			int speed=Integer.parseInt(line3);
 			int point3=1000-(life+power+speed);
-			System.out.println("体力:"+life+"攻撃力:"+power+"素早さ:"+speed+"  残りポイント:"+point3);
+			System.out.println("体力:"+life+"攻撃力:"+power+"素早さ:"+speed+"  残りpt:"+point3);
 			System.out.println("次に防御力を決めてください。同じく整数で入力してください");
 			BufferedReader reader6 = new BufferedReader(new InputStreamReader(System.in));
 			String line4=reader6.readLine();
 			int toughness=Integer.parseInt(line4);
-			Character ch1 = new Character(name,"fire",life,power,speed,toughness);
+			Character ch1 = new Character(name,type,life,power,speed,toughness);
 			System.out.println("タイプ:"+ch1.type+"体力:"+ch1.life+"攻撃力:"+ch1.power+
 					"素早さ:"+ch1.speed+"防御力:"+ch1.toughness);
 			System.out.println("モンスターは四つの技を持ちます");
 			System.out.println("四つの技を一つずつ選んでモンスターと戦います");
-			System.out.print("モンスターが持つ技は ");
-			for(int i=0;i<Character.skill.length;i++) {
-				System.out.print(Character.skill[i]+" ");
-			}System.out.println("です");
+			System.out.println("モンスターが持つ技は ");
+			System.out.println("[0]:"+Character.skill[0]+"(敵に大きなダメージを与えられるが反動でダメージを受ける。)");
+			System.out.println("[1]:"+Character.skill[1]+"(敵にダメージを与えられる。反動はない。)");
+			System.out.println("[2]:"+Character.skill[2]+"(自分の体力以外のステータスのうち１つをランダムで20pt上昇させる)");
+			System.out.println("[3]:"+Character.skill[3]+"(敵の体力以外のステータスのうちの１つをランダムで20pt減少させる");
+			System.out.println("以上の４つです");
 			System.out.println("このモンスターでバトルを開始します");
 			System.out.println();
 			
@@ -362,9 +402,9 @@ public class MonsterBattle {
 				}
 			}
 			System.out.println("バトルが終了しました。");
-			if(ch1.power>Monster.LOWER_LIMIT) {
+			if(ch1.life>Monster.LOWER_LIMIT) {
 				System.out.println("モンスターの勝利!!");
-			}else if(e1.power>Monster.LOWER_LIMIT) {
+			}else if(e1.life>Monster.LOWER_LIMIT) {
 				System.out.println("モンスターは敗北しました....");
 			}else {
 				System.out.println("引き分けです。");
