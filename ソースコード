@@ -1,5 +1,14 @@
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 class Monster{
 	final static int UPPER_LIMIT=1000;//能力の上限
@@ -169,6 +178,66 @@ class AttackE{
 
 	}
 }
+class File extends JFrame {
+	private static final long serialVersionUID = 1L;
+	private BufferedImage winImage;
+	private BufferedImage loseImage;
+
+	 File(int n) { //winバージョン
+		if(n==0) {
+		try {
+			URL url = new URL(
+					"https://4.bp.blogspot.com/-I4PvvAj24Go/VcMlbxXHo4I/AAAAAAAAwcA/VKG__46VW_E/s800/pose_win_boy.png"); 
+          //webサイトからファイル読み込み
+			winImage = ImageIO.read(url);
+		} 
+    //loseバージョンは..https://4.bp.blogspot.com/-ghnZ3is3Kuw/VcMlbOZ1C-I/AAAAAAAAwbs/AYCFlOMb1T4/s800/pose_lose_boy.png
+
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		this.getContentPane().add(new ImageCanvas(winImage));
+		this.setBounds(0, 0, 900, 900); //フレームサイズの設定
+		this.setVisible(true); //表示
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //ウィンドウを閉じるとプログラムも終了
+	}else {
+		try {
+			URL url = new URL(
+					"https://4.bp.blogspot.com/-ghnZ3is3Kuw/VcMlbOZ1C-I/AAAAAAAAwbs/AYCFlOMb1T4/s800/pose_lose_boy.png\n"); 
+          //webサイトからファイル読み込み
+			loseImage = ImageIO.read(url);
+		} 
+    //loseバージョンは..https://4.bp.blogspot.com/-ghnZ3is3Kuw/VcMlbOZ1C-I/AAAAAAAAwbs/AYCFlOMb1T4/s800/pose_lose_boy.png
+
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		this.getContentPane().add(new ImageCanvas(loseImage));
+		this.setBounds(0, 0, 900, 900); //フレームサイズの設定
+		this.setVisible(true); //表示
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //ウィンドウを閉じるとプログラムも終了
+	}
+	}
+}
+
+class ImageCanvas extends Canvas {
+	private static final long serialVersionUID = 1L;
+	Image presenImage;
+	int w, h;
+
+	public ImageCanvas(Image img) {
+		presenImage = img;
+		w = presenImage.getWidth(this);
+		h = presenImage.getHeight(this);
+		this.setSize(w, h);
+	}
+
+	public void paint(Graphics g) {
+		g.drawImage(presenImage, 0, 0, this);
+	}
+}
+
+
 
 public class MonsterBattle {
 	public static void main (String[] args) {
@@ -404,8 +473,10 @@ public class MonsterBattle {
 			System.out.println("バトルが終了しました。");
 			if(ch1.life>Monster.LOWER_LIMIT) {
 				System.out.println("モンスターの勝利!!");
+				File win = new File(0);
 			}else if(e1.life>Monster.LOWER_LIMIT) {
 				System.out.println("モンスターは敗北しました....");
+				File lose = new File(1);
 			}else {
 				System.out.println("引き分けです。");
 			}
