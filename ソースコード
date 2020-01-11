@@ -15,7 +15,8 @@ class Monster{
 	final static int LOWER_LIMIT=0;//能力の下限
 	int life, power, speed, toughness;//各能力
 	final static String[] TYPE= {"fire","water","nature","normal"};//4つの属性
-
+	final static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
+	final static double[] skillPoint = {1.3,1.0};//攻撃力にかかる倍率
 	Monster(int life, int power, int speed, int toughness) throws Exception {
 		SetAbility(life, power, speed, toughness);
 	}
@@ -35,8 +36,7 @@ class Monster{
 class Character extends Monster{
 	String name;//名前
 	String type;//属性
-	static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
-	double[] skillPoint = {1.3,1.1};//攻撃力にかかる倍率
+	
 	final static String DEAFAULT_TIPE = "normal";
 	Character(String name, String type, int life, int power, int speed, int toughness) throws Exception{
 		super(life, power, speed, toughness);
@@ -48,8 +48,6 @@ class Character extends Monster{
 /*敵のモンスター*/
 class Enemy extends Monster{
 	String type;
-	static String[] skill = {"強攻撃","弱攻撃","スキルアップ","スキルダウン"};//技
-	double[] skillPoint = {1.3,1.1};
 	Enemy(int life, int power, int speed, int toughness) throws Exception{
 		super(life,power,speed,toughness);
  		int n = (int)(Math.random()*4);
@@ -96,8 +94,8 @@ class AttackC{
 			System.out.println("敵に"+damage+"ptのダメージを与えた！");
 		}
 		if(n == 0) {
-			m1.life = m1.life - (int)((double)(m1.power)*0.05);
-			System.out.println(m1.name+"は反動で"+(int)((double)(m1.power)*(0.05))+"ptのダメージを受けた！");
+			m1.life = m1.life - damage/4;
+			System.out.println(m1.name+"は反動で"+damage/4+"ptのダメージを受けた！");
 		}
 	}
 	static void AbilityUp(Character m1, int n){
@@ -154,8 +152,8 @@ class AttackE{
 			System.out.println(m2.name+"は"+damage+"ptのダメージを受けた！");
 		}
 		if(n == 0) {
-			m1.life = m1.life - (int)((double)(m1.power)*0.05);
-			System.out.println("敵は反動で"+(int)((double)(m1.power)*0.05)+"ptのダメージを受けた！");
+			m1.life = m1.life - damage/4;
+			System.out.println("敵は反動で"+damage/4+"ptのダメージを受けた！");
 		}
 	}
 
